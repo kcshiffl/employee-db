@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "pseudoemployeedb4ac9b58c": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
