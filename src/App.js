@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { API, Storage } from 'aws-amplify';
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { withAuthenticator, AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { listNotes } from './graphql/queries';
 import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from './graphql/mutations';
 
@@ -55,6 +55,7 @@ function App() {
 
   return (
     <div className="App">
+
       <h1>My Notes App</h1>
       <input
         type="file"
@@ -85,9 +86,11 @@ function App() {
           ))
         }
       </div>
+      <AmplifyAuthenticator />
       <AmplifySignOut />
     </div>
   );
 }
 
-export default withAuthenticator(App);
+//export default withAuthenticator(App);
+export default App;
