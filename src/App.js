@@ -55,8 +55,8 @@ function App() {
 
   return (
     <div className="App">
-
       <h1>My Notes App</h1>
+      <AmplifyAuthenticator >
       <input
         type="file"
         onChange={onChange}
@@ -75,22 +75,22 @@ function App() {
       <div style={{marginBottom: 30}}>
         {
           notes.map(note => (
-          <div key={note.id || note.name}>
-          <h2>{note.name}</h2>
-          <p>{note.description}</p>
-          <button onClick={() => deleteNote(note)}>Delete note</button>
-          {
-            note.image && <img src={note.image} style={{width: 400}} />
-          }
-          </div>
+            <div key={note.id || note.name}>
+            <h2>{note.name}</h2>
+            <p>{note.description}</p>
+            <button onClick={() => deleteNote(note)}>Delete note</button>
+            {
+              note.image && <img src={note.image} style={{width: 400}} />
+            }
+            </div>
           ))
         }
       </div>
-      <AmplifyAuthenticator />
       <AmplifySignOut />
+      </AmplifyAuthenticator>
     </div>
   );
 }
 
-//export default withAuthenticator(App);
+// export default withAuthenticator(App);
 export default App;
