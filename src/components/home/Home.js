@@ -55,7 +55,7 @@ function Home() {
 
   return (
     <div className="App">
-      <h1>My Notes App</h1>
+      <h1>Welcome to Pseunotes</h1>
       <AmplifyAuthenticator >
       <input
         type="file"
