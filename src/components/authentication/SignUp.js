@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { AmplifySignUp } from '@aws-amplify/ui-react';
+import { AmplifyAuthenticator, AmplifySignUp } from '@aws-amplify/ui-react';
 
 const signUpFields=[
           {
@@ -25,8 +24,8 @@ const signUpFields=[
 function SignUp() {
   return (
     <div align='center'>
-      <h1>Sign-up Page</h1>
-      <AmplifySignUp headerText="Sign up for your account!" formFields={signUpFields} />
+      <h1></h1>
+      <AmplifySignUp slot="sign-up" headerText="Sign up for your account!" formFields={signUpFields} />
     </div>
   );
 }

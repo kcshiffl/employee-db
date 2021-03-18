@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { AmplifySignIn } from '@aws-amplify/ui-react';
+import { AmplifyAuthenticator, AmplifySignIn, AmplifySignOut } from '@aws-amplify/ui-react';
 
 const signInFields=[
           {
@@ -19,9 +18,12 @@ const signInFields=[
 
 function SignIn() {
   return (
-    <div align='center'>
-      <h1>Login Page</h1>
-      <AmplifySignIn headerText="Welcome back!" formFields={signInFields}/>
+    <div align='center' >
+      <AmplifyAuthenticator>
+        <AmplifySignIn slot="sign-in" headerText="Log in to Pseunotes!" formFields={signInFields} />
+        loggedin
+        <AmplifySignOut />
+      </AmplifyAuthenticator>
     </div>
   );
 }

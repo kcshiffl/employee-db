@@ -1,8 +1,9 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  color: #01689A;
+  font-size: 18px;
+  background-color: #16223C;
+  font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,4 +11,103 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.header {
+  position: relative;
+}
+
+.header-right{
+  position: fixed;
+  align-items: space-between;
+  display: flex;
+  right: 10px;
+  margin-top: 15px;
+}
+
+.header-left {
+  position: fixed;
+  align-items: space-between;
+  display: flex;
+  left: 10px;
+  margin-top: 15px;
+}
+
+.button-dark {
+  font-weight: bold;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: none;
+  text-align: center;
+
+  space-between: 5px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 5px;
+
+  border-radius: 5px;
+  border: none;
+
+  color: white;
+  background-color: #01689A;
+}
+
+.button-dark:hover, .button-dark:active {
+  background-color: rgba(37,187,232,.8);
+  transition: 600ms;
+  border: none;
+  cursor: pointer;
+}
+
+.button-clear {
+  font-weight: bold;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: none;
+  text-align: center;
+
+  space-between: 5px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 5px;
+
+  border-radius: 5px;
+  border: none;
+
+  color: white;
+  background-color: rgba(255,255,255,0);
+}
+
+.button-clear:hover, .button-clear:active {
+  background-color: rgba(255,255,255,0.1);
+  transition: 600ms;
+  border: none;
+  cursor: pointer;
+}
+
+.container {
+  position: absolute;
+  max-width: 40%;
+  color: white;
+  margin-top: 20%;
+  align-self: center;
+  margin-left: 15%;
+  color: #53CCB0;
+}
+
+:link, :visited {
+  font-family: inherit;
+  text-decoration: none;
+  color: white;
+}
+
+:root {
+  --amplify-container-align: center;
+  --amplify-background-color: #afc0d0;
+  --amplify-primary-color: #01689A;
+  --amplify-secondary-color: black;
+  --amplify-primary-tint: blue;
+  --amplify-primary-shade: red;
 }
