@@ -2,7 +2,7 @@ body {
   margin: 0;
   color: #01689A;
   font-size: 18px;
-  background-color: #16223C;
+  background-color: white;
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -76,7 +76,7 @@ code {
   border-radius: 5px;
   border: none;
 
-  color: white;
+  color: #01689A;
   background-color: rgba(255,255,255,0);
 }
 
@@ -94,7 +94,7 @@ code {
   margin-top: 20%;
   align-self: center;
   margin-left: 15%;
-  color: #53CCB0;
+  color: #01689A;
 }
 
 :link, :visited {
@@ -105,9 +105,9 @@ code {
 
 :root {
   --amplify-container-align: center;
-  --amplify-background-color: #afc0d0;
-  --amplify-primary-color: #01689A;
-  --amplify-secondary-color: black;
+  --amplify-background-color: #f4989D;
+  --amplify-primary-color: #16223C;
+  --amplify-secondary-color: #16223C;
   --amplify-primary-tint: blue;
   --amplify-primary-shade: red;
 }

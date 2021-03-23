@@ -21,7 +21,7 @@ function SignIn() {
     <div align='center' >
       <AmplifyAuthenticator>
         <AmplifySignIn slot="sign-in" headerText="Log in to Pseunotes!" formFields={signInFields} />
-        loggedin
+          loggedin
         <AmplifySignOut />
       </AmplifyAuthenticator>
     </div>
