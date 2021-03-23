@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  color: #01689A;
+  color: black;
   font-size: 18px;
-  background-color: white;
+  background-color: black;
   font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -13,88 +13,32 @@ code {
     monospace;
 }
 
-.header {
-  position: relative;
-}
+.library {
+  width: 20%;
+  height: 100%;
 
-.header-right{
-  position: fixed;
-  align-items: space-between;
   display: flex;
-  right: 10px;
-  margin-top: 15px;
-}
+  flex-direction: column;
+  flex-wrap: wrap;
 
-.header-left {
-  position: fixed;
-  align-items: space-between;
-  display: flex;
-  left: 10px;
-  margin-top: 15px;
-}
-
-.button-dark {
-  font-weight: bold;
-  font-family: inherit;
-  font-size: inherit;
-  text-decoration: none;
-  text-align: center;
-
-  space-between: 5px;
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin: 5px;
-
-  border-radius: 5px;
-  border: none;
-
-  color: white;
-  background-color: #01689A;
-}
-
-.button-dark:hover, .button-dark:active {
-  background-color: rgba(37,187,232,.8);
-  transition: 600ms;
-  border: none;
-  cursor: pointer;
-}
-
-.button-clear {
-  font-weight: bold;
-  font-family: inherit;
-  font-size: inherit;
-  text-decoration: none;
-  text-align: center;
-
-  space-between: 5px;
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin: 5px;
-
-  border-radius: 5px;
-  border: none;
-
-  color: #01689A;
-  background-color: rgba(255,255,255,0);
-}
-
-.button-clear:hover, .button-clear:active {
-  background-color: rgba(255,255,255,0.1);
-  transition: 600ms;
-  border: none;
-  cursor: pointer;
-}
-
-.container {
+  right: 0px;
   position: absolute;
-  max-width: 40%;
-  color: white;
-  margin-top: 20%;
-  align-self: center;
-  margin-left: 15%;
-  color: #01689A;
+
+  background-color: #473857;
+}
+
+.note {
+  margin: 5px;
+  background-color: #EEC979;
+  background-color: #F0ADA7;
+  background-color: #48B0C7;
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 0px 1px 1px black;
+}
+
+.note:hover {
+  cursor: pointer;
 }
 
 :link, :visited {
