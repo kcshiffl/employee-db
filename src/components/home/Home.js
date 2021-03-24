@@ -11,20 +11,26 @@ var notes = [1,2,3];
 const createDiv = (color, text) => `<Note color={color} text={text} />`;
 
 /** Getting drag position **/
+/**
 document.addEventListener("dragover", function(e){
     e = e || window.event;
     var overX = e.pageX, overY = e.pageY;
     x = overX; y = overY;
 }, false);
-
-/**
-document.addEventListener("dragend", function(e) {
-    e = e || window.event;
-    var dragX = e.pageX, dragY = e.pageY;
-    console.log('Dropped at X: ' + dragX + ', Y: ' + dragY);
-});
 **/
 
+document.addEventListener("dragend", function(e) {
+    e = e || window.event;
+    // Storing ref to the dragged element
+    var dragged = e.target;
+
+    var dragX = e.pageX, dragY = e.pageY;
+    console.log('Dropped at X: ' + dragX + ', Y: ' + dragY);
+    x = dragX; y = dragY;
+
+    console.log(dragged.style.backgroundColor);
+    addNotes(dragged.style.backgroundColor);
+});
 
 class NoteClass {
   constructor(id, color, text, positionX, positionY) {
@@ -60,7 +66,7 @@ function makeNote(color, text, positionX, positionY) {
   console.log("Length: " + notes.length);
 }
 
-function addNotes() {
+function addNotes(color) {
   let note = new NoteClass(notes.length, 'red', 'hello', x, y);
 
   notes.push(note);
@@ -68,6 +74,8 @@ function addNotes() {
   newElement.id = notes.length;
   newElement.className = 'note';
   newElement.draggable = 'true';
+
+  newElement.style.backgroundColor = color;
   newElement.style.left = x.toString()+"px";
   newElement.style.top = y.toString()+"px";
   newElement.append("Hello test!");
@@ -79,10 +87,6 @@ function addNotes() {
 const Home = () => {
   return (
   <div>
-    <div id='board'>
-      <button onClick={() => addNotes()}>button</button>
-    </div>
-
     <div id='library' className='library'>
       <NoteBase color='red'/>
       <NoteBase color='blue'/>
