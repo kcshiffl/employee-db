@@ -35,9 +35,26 @@ code {
   width: 100px;
   height: 100px;
   box-shadow: 0 0px 1px 1px black;
+  overflow-wrap: break-word;
+  position: absolute;
 }
 
 .note:hover {
+  cursor: pointer;
+}
+
+.notebase {
+  margin: 5px;
+  background-color: #EEC979;
+  background-color: #F0ADA7;
+  background-color: #48B0C7;
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 0px 1px 1px black;
+  overflow-wrap: break-word;
+}
+
+.notebase:hover {
   cursor: pointer;
 }
 

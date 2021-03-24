@@ -6,7 +6,7 @@ function setPositionY(y) { positionY = y; }
 const Note = ({color, text}) => {
   return (
     <div className='note' draggable='true'>
-
+      {text}
     </div>
   );
 }
