@@ -3,7 +3,7 @@ var positionX, positionY;
 function setPositionX(x) { positionX = x; }
 function setPositionY(y) { positionY = y; }
 
-const Note = ({color, text}) => {
+const note = ({color, text}) => {
   return (
     <div className='note' draggable='true'>
       {text}
@@ -11,4 +11,4 @@ const Note = ({color, text}) => {
   );
 }
 
-export default Note;
+export default note;

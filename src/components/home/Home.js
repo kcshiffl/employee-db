@@ -6,19 +6,24 @@ import Note from '../note/Note';
 import NoteBase from '../note/NoteBase';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+var x = 100; var y = 100;
 var notes = [1,2,3];
+const createDiv = (color, text) => `<Note color={color} text={text} />`;
 
 /** Getting drag position **/
 document.addEventListener("dragover", function(e){
     e = e || window.event;
-    var dragX = e.pageX, dragY = e.pageY;
+    var overX = e.pageX, overY = e.pageY;
+    x = overX; y = overY;
 }, false);
 
+/**
 document.addEventListener("dragend", function(e) {
     e = e || window.event;
     var dragX = e.pageX, dragY = e.pageY;
     console.log('Dropped at X: ' + dragX + ', Y: ' + dragY);
 });
+**/
 
 
 class NoteClass {
@@ -56,22 +61,26 @@ function makeNote(color, text, positionX, positionY) {
 }
 
 function addNotes() {
-  var html='';
-  for (var i=0; i<=notes.length; i++) {
-    //html+='<div>'+balls90[i]+'</div>';
-    html+='<Note />';
-  }
-  document.getElementById('board').innerHTML+= html;
+  let note = new NoteClass(notes.length, 'red', 'hello', x, y);
+
+  notes.push(note);
+  var newElement = document.createElement('div');
+  newElement.id = notes.length;
+  newElement.className = 'note';
+  newElement.draggable = 'true';
+  newElement.style.left = x.toString()+"px";
+  newElement.style.top = y.toString()+"px";
+  newElement.append("Hello test!");
+  document.body.appendChild(newElement);
+
+  console.log("adding notes...");
 }
 
 const Home = () => {
   return (
   <div>
     <div id='board'>
-      <button onClick={() => makeNote('red','hello', 10,10)}>button</button>
-      <script>
-        addNotes();
-      </script>
+      <button onClick={() => addNotes()}>button</button>
     </div>
 
     <div id='library' className='library'>
