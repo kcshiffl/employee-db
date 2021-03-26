@@ -46,7 +46,7 @@ document.addEventListener("mousedown", function(e) {
 
     var id;
     if (object.className === 'notebase') {
-      makeNote(object.style.backgroundColor, x, y);
+      makeNote(object.style.backgroundColor, (x - offsetX), (y - offsetY));
       id = notes.size-1;
     }
     else if (object.className === 'note'){
