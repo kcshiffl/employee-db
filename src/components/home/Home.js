@@ -3,6 +3,7 @@ import NoteBase from '../note/NoteBase';
 import click1 from '../sounds/click1.mp3';
 import click2 from '../sounds/click2.mp3';
 
+var id;
 var x; var y; // Global x,y coordinates for mouse dragging
 var notes = new Map(); // Map that holds the notes created by user
 var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all possible colors of notes
@@ -21,6 +22,7 @@ function mousedown(id, offsetX, offsetY) {
 
 function mouseup() {
   console.log("Mouse up!");
+  document.getElementById(id).style.transform = "scale(1.0)";
   clearInterval(mousedownID);
 }
 
@@ -45,17 +47,20 @@ document.addEventListener("mousedown", function(e) {
     var offsetX = dragX - rect.left;
     var offsetY = dragY - rect.top;
 
-    var id;
     if (object.className === 'notebase') {
       var audio = new Audio(click1);
       audio.play();
       makeNote(object.style.backgroundColor, (x - offsetX), (y - offsetY));
       id = notes.size-1;
+
+      document.getElementById(id).style.transform = "scale(1.1)";
     }
     else if (object.className === 'note'){
       var audio = new Audio(click2);
       audio.play();
       id = object.id;
+
+      document.getElementById(id).style.transform = "scale(1.05)";
     }
     else return;
     if (id === null) return;

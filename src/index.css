@@ -37,6 +37,7 @@ code {
   box-shadow: 0 0px 1px 1px black;
   overflow-wrap: break-word;
   position: absolute;
+  transition: transform 0.1s;
 }
 
 .note:hover {
