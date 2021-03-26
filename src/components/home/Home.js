@@ -19,7 +19,7 @@ function mousedown(id, offsetX, offsetY) {
   }
   , 10 /*execute every 30ms*/);
 }
-
+//
 function mouseup() {
   console.log("Mouse up!");
   document.getElementById(id).style.transform = "scale(1.0)";
