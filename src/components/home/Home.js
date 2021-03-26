@@ -19,7 +19,7 @@ function mousedown(id, offsetX, offsetY) {
   }
   , 10 /*execute every 30ms*/);
 }
-//
+
 function mouseup() {
   console.log("Mouse up!");
   document.getElementById(id).style.transform = "scale(1.0)";
@@ -48,7 +48,7 @@ document.addEventListener("mousedown", function(e) {
     var offsetY = dragY - rect.top;
 
     if (object.className === 'notebase') {
-      var audio = new Audio(click1);
+      var audio = new Audio(click2);
       audio.play();
       makeNote(object.style.backgroundColor, (x - offsetX), (y - offsetY));
       id = notes.size-1;
@@ -56,7 +56,7 @@ document.addEventListener("mousedown", function(e) {
       document.getElementById(id).style.transform = "scale(1.1)";
     }
     else if (object.className === 'note'){
-      var audio = new Audio(click2);
+      var audio = new Audio(click1);
       audio.play();
       id = object.id;
 
