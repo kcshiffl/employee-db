@@ -28,6 +28,7 @@ code {
 }
 
 .note {
+  border-radius: 1.5px;
   margin: 5px;
   background-color: #EEC979;
   background-color: #F0ADA7;
@@ -45,6 +46,7 @@ code {
 }
 
 .notebase {
+  border-radius: 1.5px;
   margin: 5px;
   background-color: red;
   width: 100px;
@@ -55,6 +57,12 @@ code {
 
 .notebase:hover {
   cursor: pointer;
+}
+
+.note-text {
+  margin: 2px;
+  margin-left: 5px;
+  pointer-events: none;
 }
 
 :link, :visited {

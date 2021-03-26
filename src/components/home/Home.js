@@ -105,6 +105,7 @@ function makeNote(color, x, y) {
   /** Adding text element inside of the note **/
   var text = document.createElement('div');
     text.id = 'note-text';
+    text.className = 'note-text';
     text.contentEditable = 'false';
     text.append('content');
 
