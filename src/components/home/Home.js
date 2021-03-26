@@ -1,36 +1,63 @@
-import React, { useState, useEffect } from 'react';
 import '../../App.css';
-import { Link } from "react-router-dom";
-import logo from '../../logo.png';
-import Note from '../note/Note';
 import NoteBase from '../note/NoteBase';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-var x = 100; var y = 100;
-var notes = [1,2,3];
-const createDiv = (color, text) => `<Note color={color} text={text} />`;
+var x; var y; // Global x,y coordinates for mouse dragging
+var notes = new Map(); // Map that holds the notes created by user
+var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all possible colors of notes
+
+var mousedownID;  //Global ID of mouse down interval
+function mousedown(id, offsetX, offsetY) {
+  mousedownID = setInterval(function() {
+    var object = document.getElementById(id);
+    if (object.className === 'note') {
+
+      object.style.left = (x - offsetX).toString()+"px";
+      object.style.top = (y - offsetY).toString()+"px";
+    }
+  }
+  , 10 /*execute every 30ms*/);
+}
+
+function mouseup() {
+  console.log("Mouse up!");
+  clearInterval(mousedownID);
+}
 
 /** Getting drag position **/
-/**
-document.addEventListener("dragover", function(e){
+document.addEventListener("mousemove", function(e){
     e = e || window.event;
-    var overX = e.pageX, overY = e.pageY;
-    x = overX; y = overY;
-}, false);
-**/
-
-document.addEventListener("dragend", function(e) {
-    e = e || window.event;
-    // Storing ref to the dragged element
-    var dragged = e.target;
-
     var dragX = e.pageX, dragY = e.pageY;
-    console.log('Dropped at X: ' + dragX + ', Y: ' + dragY);
     x = dragX; y = dragY;
+}, false);
 
-    console.log(dragged.style.backgroundColor);
-    addNotes(dragged.style.backgroundColor);
+document.addEventListener("mousedown", function(e) {
+    console.log("Mouse down...");
+    e.preventDefault();
+    e = e || window.event;
+
+    // Storing ref to the dragged element
+    var object = e.target;
+    var dragX = e.pageX, dragY = e.pageY;
+
+    /** Getting offset of mouse and object **/
+    const rect = object.getBoundingClientRect();
+    var offsetX = dragX - rect.left;
+    var offsetY = dragY - rect.top;
+
+    var id;
+    if (object.className === 'notebase') {
+      makeNote(object.style.backgroundColor, x, y);
+      id = notes.size-1;
+    }
+    else if (object.className === 'note'){
+      id = object.id;
+    }
+    else return;
+    if (id === null) return;
+
+    mousedown(id, offsetX, offsetY);
 });
+document.addEventListener("mouseup", mouseup);
 
 class NoteClass {
   constructor(id, color, text, positionX, positionY) {
@@ -53,44 +80,38 @@ class NoteClass {
   set positionY(value) { this._positionY = value; }
 }
 
-function makeNote(color, text, positionX, positionY) {
-  if (!positionX || !positionY) return;
-  if (!color) color = 'yellow';
-  if (!text) text = '';
+function makeNote(color, x, y) {
+  let note = new NoteClass(notes.size, color, '', x, y);
 
-  let id = notes.length;
-  let note = new NoteClass(id, color, text, positionX, positionY);
-  notes.push(note);
-  console.log("Note " + id + " created.");
-  console.log("note created");
-  console.log("Length: " + notes.length);
-}
-
-function addNotes(color) {
-  let note = new NoteClass(notes.length, 'red', 'hello', x, y);
-
-  notes.push(note);
+  /** Creating note element **/
   var newElement = document.createElement('div');
-  newElement.id = notes.length;
-  newElement.className = 'note';
-  newElement.draggable = 'true';
+    newElement.id = notes.size;
+    newElement.className = 'note';
+    newElement.draggable = 'false';
+    newElement.style.backgroundColor = color;
+    newElement.style.left = x.toString()+"px";
+    newElement.style.top = y.toString()+"px";
 
-  newElement.style.backgroundColor = color;
-  newElement.style.left = x.toString()+"px";
-  newElement.style.top = y.toString()+"px";
-  newElement.append("Hello test!");
+  /** Adding text element inside of the note **/
+  var text = document.createElement('div');
+    text.id = 'note-text';
+    text.contentEditable = 'false';
+    text.append('content');
+
+  newElement.append(text);
   document.body.appendChild(newElement);
-
-  console.log("adding notes...");
+  notes.set(note.id, note);
+  console.log("Note added. Map length: " + notes.size);
+  return newElement;
 }
 
 const Home = () => {
+  var notebases = notebaseColors.map(item => <NoteBase color={item} />)
+
   return (
   <div>
-    <div id='library' className='library'>
-      <NoteBase color='red'/>
-      <NoteBase color='blue'/>
-      <NoteBase />
+    <div id='library' className='library' draggable='false'>
+      {notebases}
     </div>
 
   </div>

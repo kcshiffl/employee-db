@@ -1,6 +1,3 @@
-import React, { useState } from 'react';
-import Amplify, { Auth } from 'aws-amplify';
-
 /** Routing pages **/
 import {
   BrowserRouter as Router,
@@ -17,8 +14,6 @@ import NotFoundPage from "./components/error/NotFoundPage";
 import UserPage from "./components/userpage/UserPage";
 
 function App() {
-  let [user, setUser] = useState(null);
-
   return (
     <Router>
       <Switch>
