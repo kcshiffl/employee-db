@@ -44,8 +44,8 @@ document.addEventListener("mousedown", function(e) {
 
     /** Getting offset of mouse and object **/
     const rect = object.getBoundingClientRect();
-    var offsetX = dragX - rect.left;
-    var offsetY = dragY - rect.top;
+    var offsetX = dragX - rect.left+4.5;
+    var offsetY = dragY - rect.top+4.5;
 
     if (object.className === 'notebase') {
       var audio = new Audio(click2);
@@ -53,7 +53,7 @@ document.addEventListener("mousedown", function(e) {
       makeNote(object.style.backgroundColor, (x - offsetX), (y - offsetY));
       id = notes.size-1;
 
-      document.getElementById(id).style.transform = "scale(1.1)";
+      document.getElementById(id).style.transform = "scale(1.05)";
     }
     else if (object.className === 'note'){
       var audio = new Audio(click1);
