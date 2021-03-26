@@ -5,7 +5,7 @@ const NoteBase = (obj) => {
     draggable = 'false'
     style= {{ backgroundColor: obj.color }}
   >
-  
+
   </div>
   );
 }
