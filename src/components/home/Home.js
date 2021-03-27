@@ -1,15 +1,16 @@
 import '../../App.css';
-import NoteBase from '../note/NoteBase';
-import click1 from '../sounds/click1.mp3';
-import click2 from '../sounds/click2.mp3';
-import { FaChevronDown } from 'react-icons/fa'
+import NoteBase from '../note/NoteBase'; // Class for base colors of note (stored in library)
+import click1 from '../sounds/click1.mp3'; // Click noise 1
+import click2 from '../sounds/click2.mp3'; // Click noise 2
+import { FaChevronDown, FaPlus } from 'react-icons/fa' // Arrow icon (For library)
 
+var libraryOpen = true;
 var id;
 var x; var y; // Global x,y coordinates of coordinates where mouse is on the page
 var notes = new Map(); // Map that holds all notes created by user
 var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all default colors of notes
 
-var mousedownID;  //Global ID of mouse down interval
+var mousedownID;  // Global ID of mouse down interval
 function mousedown(id, offsetX, offsetY) {
   mousedownID = setInterval(function() {
     var object = document.getElementById(id);
@@ -21,14 +22,19 @@ function mousedown(id, offsetX, offsetY) {
   , 10 /*execute every 10ms*/);
 }
 
+/**
+* Called every time a mouse click is lifted
+* - Resets the size of what is being clicked to 100% of original size
+* - Clears the mouse-down interval that indicates the click has lifted (i.e. finished dragging)
+**/
 function mouseup() {
-  console.log("Mouse up!");
+  //console.log("Mouse up!");
   var elem = document.getElementById(id);
   if (elem != null) elem.style.transform = "scale(1.0)";
   clearInterval(mousedownID);
 }
 
-/** Getting drag position **/
+/** Getting mouse position **/
 document.addEventListener("mousemove", function(e){
     e = e || window.event;
     var dragX = e.pageX, dragY = e.pageY;
@@ -36,7 +42,7 @@ document.addEventListener("mousemove", function(e){
 }, false);
 
 document.addEventListener("mousedown", function(e) {
-    console.log("Mouse down...");
+    //console.log("Mouse down...");
     e.preventDefault();
     e = e || window.event;
 
@@ -54,15 +60,15 @@ document.addEventListener("mousedown", function(e) {
       audio.play();
       makeNote(object.style.backgroundColor, (x - offsetX), (y - offsetY));
       id = notes.size-1;
-
       document.getElementById(id).style.transform = "scale(1.05)";
     }
     else if (object.className === 'note'){
       var audio = new Audio(click1);
       audio.play();
       id = object.id;
-
-      document.getElementById(id).style.transform = "scale(1.05)";
+      var elem = document.getElementById(id);
+      elem.parentElement.appendChild(elem); // Moving to front
+      elem.style.transform = "scale(1.05)";
     }
     else return;
     if (id === null) return;
@@ -110,22 +116,43 @@ function makeNote(color, x, y) {
     text.className = 'note-text';
     text.contentEditable = 'false';
     text.append('content');
-
   newElement.append(text);
+
+  newElement.addEventListener('dblclick', function(e) {
+      if (newElement.children[0].id != 'note-text') return;
+      newElement.children[0].contentEditable = 'true';
+      newElement.style.pointerEvents = 'auto';
+      console.log("double clicked");
+  });
   document.body.appendChild(newElement);
   notes.set(note.id, note);
-  console.log("Note added. Map length: " + notes.size);
   return newElement;
 }
 
-const Home = () => {
-  var notebases = notebaseColors.map(item => <NoteBase color={item} />)
+/**
+* Toggles the library to show if hidden, and hide if shown
+**/
+function toggleLibrary() {
+  if (libraryOpen) {
+    document.getElementById('downArrow').style.transform = "rotate(0deg)";
+    document.getElementById('library').style.top = '-125px';
+    libraryOpen=false;
+  }
+  else {
+    document.getElementById('downArrow').style.transform = "rotate(180deg)";
+    document.getElementById('library').style.top = '0px';
+    libraryOpen=true;
+  }
+}
 
+const Home = () => {
+  var notebases = notebaseColors.map(item => <NoteBase color={item} />) // Maps all default note colors
   return (
   <div>
     <div id='library' className='library' draggable='false'>
       {notebases}
-      <FaChevronDown className='downArrow' size={30} />
+      <FaPlus className='plus-icon' />
+      <div onClick={toggleLibrary} id='downArrow' className='downArrow' align='center'><FaChevronDown size={40}/></div>
     </div>
 
   </div>
