@@ -2,6 +2,7 @@ import '../../App.css';
 import NoteBase from '../note/NoteBase'; // Class for base colors of note (stored in library)
 import click1 from '../sounds/click1.mp3'; // Click noise 1
 import click2 from '../sounds/click2.mp3'; // Click noise 2
+import click3 from '../sounds/click3.mp3'; // Click noise 2
 import { FaChevronDown, FaPlus } from 'react-icons/fa' // Arrow icon (For library)
 
 var libraryOpen = true;
@@ -9,6 +10,8 @@ var id;
 var x; var y; // Global x,y coordinates of coordinates where mouse is on the page
 var notes = new Map(); // Map that holds all notes created by user
 var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all default colors of notes
+
+
 
 var mousedownID;  // Global ID of mouse down interval
 function mousedown(id, offsetX, offsetY) {
@@ -32,6 +35,17 @@ function mouseup() {
   var elem = document.getElementById(id);
   if (elem != null) elem.style.transform = "scale(1.0)";
   clearInterval(mousedownID);
+
+  /** Removing note if it was let go in the library section **/
+  if (elem != null && elem.className === 'note') {
+    var libCoords = document.getElementById('library').getBoundingClientRect(); // Coordinates of library
+    var noteCoords = elem.getBoundingClientRect();
+    if (noteCoords.top < libCoords.bottom) {
+      elem.remove();
+      var audio = new Audio(click3);
+      audio.play();
+    }
+  }
 }
 
 /** Getting mouse position **/
@@ -55,6 +69,7 @@ document.addEventListener("mousedown", function(e) {
     var offsetX = dragX - rect.left+4.5;
     var offsetY = dragY - rect.top+4.5;
 
+    // Notebase
     if (object.className === 'notebase') {
       var audio = new Audio(click2);
       audio.play();
@@ -62,13 +77,14 @@ document.addEventListener("mousedown", function(e) {
       id = notes.size-1;
       document.getElementById(id).style.transform = "scale(1.05)";
     }
+    // Note
     else if (object.className === 'note'){
       var audio = new Audio(click1);
       audio.play();
       id = object.id;
       var elem = document.getElementById(id);
-      elem.parentElement.appendChild(elem); // Moving to front
-      elem.style.transform = "scale(1.05)";
+        elem.parentElement.appendChild(elem); // Moving to front
+        elem.style.transform = "scale(1.05)";
     }
     else return;
     if (id === null) return;
@@ -118,15 +134,22 @@ function makeNote(color, x, y) {
     text.append('content');
   newElement.append(text);
 
+  /** On double click, user can change text to note **/
   newElement.addEventListener('dblclick', function(e) {
       if (newElement.children[0].id != 'note-text') return;
       newElement.children[0].contentEditable = 'true';
       newElement.style.pointerEvents = 'auto';
       console.log("double clicked");
   });
+
   document.body.appendChild(newElement);
   notes.set(note.id, note);
   return newElement;
+}
+
+function removeNote(id) {
+  document.getElementById(id).remove();
+  notes.remove(id);
 }
 
 /**
