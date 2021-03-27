@@ -2,11 +2,12 @@ import '../../App.css';
 import NoteBase from '../note/NoteBase';
 import click1 from '../sounds/click1.mp3';
 import click2 from '../sounds/click2.mp3';
+import { FaChevronDown } from 'react-icons/fa'
 
 var id;
-var x; var y; // Global x,y coordinates for mouse dragging
-var notes = new Map(); // Map that holds the notes created by user
-var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all possible colors of notes
+var x; var y; // Global x,y coordinates of coordinates where mouse is on the page
+var notes = new Map(); // Map that holds all notes created by user
+var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all default colors of notes
 
 var mousedownID;  //Global ID of mouse down interval
 function mousedown(id, offsetX, offsetY) {
@@ -17,12 +18,13 @@ function mousedown(id, offsetX, offsetY) {
       object.style.top = (y - offsetY).toString()+"px";
     }
   }
-  , 10 /*execute every 30ms*/);
+  , 10 /*execute every 10ms*/);
 }
 
 function mouseup() {
   console.log("Mouse up!");
-  document.getElementById(id).style.transform = "scale(1.0)";
+  var elem = document.getElementById(id);
+  if (elem != null) elem.style.transform = "scale(1.0)";
   clearInterval(mousedownID);
 }
 
@@ -123,6 +125,7 @@ const Home = () => {
   <div>
     <div id='library' className='library' draggable='false'>
       {notebases}
+      <FaChevronDown className='downArrow' size={30} />
     </div>
 
   </div>
