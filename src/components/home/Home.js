@@ -1,4 +1,6 @@
 import '../../App.css';
+import Note from '../note/Note';
+import NoteInfo from '../note/NoteInfo';
 import NoteBase from '../note/NoteBase'; // Class for base colors of note (stored in library)
 import click1 from '../sounds/click1.mp3'; // Click noise 1
 import click2 from '../sounds/click2.mp3'; // Click noise 2
@@ -6,20 +8,26 @@ import click3 from '../sounds/click3.mp3'; // Click noise 2
 import { FaChevronDown, FaPlus } from 'react-icons/fa' // Arrow icon (For library)
 
 var libraryOpen = true;
-var id;
 var x; var y; // Global x,y coordinates of coordinates where mouse is on the page
+
 var notes = new Map(); // Map that holds all notes created by user
+var currNote = new NoteInfo(0, 0, 0); // State of the note currently selected
 var notebaseColors = ['#F0ADA7', '#EEC979','#48B0C7']; // Holds all default colors of notes
 
+var dragging = false;
+var noteSound = new Audio(click1);
+var baseSound = new Audio(click2);
+var dropSound = new Audio(click3);
 
 
 var mousedownID;  // Global ID of mouse down interval
-function mousedown(id, offsetX, offsetY) {
+function mousedown() {
   mousedownID = setInterval(function() {
-    var object = document.getElementById(id);
+    if (currNote === null) return;
+    var object = document.getElementById(currNote.id);
     if (object.className === 'note') {
-      object.style.left = (x - offsetX).toString()+"px";
-      object.style.top = (y - offsetY).toString()+"px";
+      object.style.left = (x - currNote.offsetX).toString()+"px";
+      object.style.top = (y - currNote.offsetY).toString()+"px";
     }
   }
   , 10 /*execute every 10ms*/);
@@ -31,32 +39,50 @@ function mousedown(id, offsetX, offsetY) {
 * - Clears the mouse-down interval that indicates the click has lifted (i.e. finished dragging)
 **/
 function mouseup() {
-  //console.log("Mouse up!");
-  var elem = document.getElementById(id);
-  if (elem != null) elem.style.transform = "scale(1.0)";
+  dragging = false;
+  try {
+    var elem = document.getElementById(currNote.id);
+    if (elem != null) {
+      elem.style.transform = "scale(1.0)";
+      elem.style.zIndex = '1';
+    }
+  } catch(err) { }
   clearInterval(mousedownID);
+
+  if (currNote === null) return;
+  // Note clicked - Edit the text of the note
+  if (currNote.x === x && currNote.y === y) {
+    console.log("Clicked!");
+  }
 
   /** Removing note if it was let go in the library section **/
   if (elem != null && elem.className === 'note') {
-    var libCoords = document.getElementById('library').getBoundingClientRect(); // Coordinates of library
-    var noteCoords = elem.getBoundingClientRect();
-    if (noteCoords.top < libCoords.bottom) {
+    if (elem.getBoundingClientRect().top < document.getElementById('library').getBoundingClientRect().bottom) {
       elem.remove();
-      var audio = new Audio(click3);
-      audio.play();
+      dropSound.play();
     }
   }
+  currNote = null;
 }
 
 /** Getting mouse position **/
 document.addEventListener("mousemove", function(e){
     e = e || window.event;
-    var dragX = e.pageX, dragY = e.pageY;
-    x = dragX; y = dragY;
+    x = e.pageX; y = e.pageY;
+
+    if (currNote === null) return;
+    if (!dragging && currNote.x !== x && currNote.y !== y) {
+      var elem = document.getElementById(currNote.id);
+      if (elem === null) return;
+      if (elem.className === 'note') {
+        elem.style.transform = "scale(1.05)";
+        noteSound.play();
+      }
+      dragging = true;
+    }
 }, false);
 
 document.addEventListener("mousedown", function(e) {
-    //console.log("Mouse down...");
     e.preventDefault();
     e = e || window.event;
 
@@ -71,51 +97,29 @@ document.addEventListener("mousedown", function(e) {
 
     // Notebase
     if (object.className === 'notebase') {
-      var audio = new Audio(click2);
-      audio.play();
+      // baseSound.play();
       makeNote(object.style.backgroundColor, (x - offsetX), (y - offsetY));
-      id = notes.size-1;
-      document.getElementById(id).style.transform = "scale(1.05)";
+      currNote = new NoteInfo(notes.size-1, dragX, dragY, offsetX, offsetY);
+      var elem = document.getElementById(currNote.id);
+        elem.style.transform = "scale(1.05)";
+        elem.style.zIndex = '20';
     }
     // Note
     else if (object.className === 'note'){
-      var audio = new Audio(click1);
-      audio.play();
-      id = object.id;
-      var elem = document.getElementById(id);
+      currNote = new NoteInfo(object.id, dragX, dragY, offsetX, offsetY);
+      var elem = document.getElementById(currNote.id);
         elem.parentElement.appendChild(elem); // Moving to front
-        elem.style.transform = "scale(1.05)";
+        elem.style.zIndex = '20';
     }
     else return;
-    if (id === null) return;
+    if (currNote[0] === null) return;
 
-    mousedown(id, offsetX, offsetY);
+    mousedown();
 });
 document.addEventListener("mouseup", mouseup);
 
-class NoteClass {
-  constructor(id, color, text, positionX, positionY) {
-      this.id = id;
-      this.color = color;
-      this.text = text;
-      this.positionX = positionX;
-      this.positionY = positionY;
-  }
-  get id() { return this._id; }
-  get color() { return this._color; }
-  get text() { return this._text; }
-  get positionX() { return this._positionX; }
-  get positionY() { return this._positionY; }
-
-  set id(value) { this._id = value; }
-  set color(value) { this._color = value; }
-  set text(value) { this._text = value; }
-  set positionX(value) { this._positionX = value; }
-  set positionY(value) { this._positionY = value; }
-}
-
 function makeNote(color, x, y) {
-  let note = new NoteClass(notes.size, color, '', x, y);
+  let note = new Note(notes.size, color, '', x, y);
 
   /** Creating note element **/
   var newElement = document.createElement('div');
@@ -125,6 +129,7 @@ function makeNote(color, x, y) {
     newElement.style.backgroundColor = color;
     newElement.style.left = x.toString()+"px";
     newElement.style.top = y.toString()+"px";
+    newElement.style.zIndex = '20';
 
   /** Adding text element inside of the note **/
   var text = document.createElement('div');
@@ -134,13 +139,14 @@ function makeNote(color, x, y) {
     text.append('content');
   newElement.append(text);
 
-  /** On double click, user can change text to note **/
+  /** On double click, user can change text to note
   newElement.addEventListener('dblclick', function(e) {
-      if (newElement.children[0].id != 'note-text') return;
+      if (newElement.children[0].id !== 'note-text') return;
       newElement.children[0].contentEditable = 'true';
       newElement.style.pointerEvents = 'auto';
       console.log("double clicked");
   });
+  **/
 
   document.body.appendChild(newElement);
   notes.set(note.id, note);
@@ -170,6 +176,7 @@ function toggleLibrary() {
 
 const Home = () => {
   var notebases = notebaseColors.map(item => <NoteBase color={item} />) // Maps all default note colors
+
   return (
   <div>
     <div id='library' className='library' draggable='false'>
